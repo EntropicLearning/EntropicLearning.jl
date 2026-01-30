@@ -1,8 +1,6 @@
 # EntropicLearning.jl
 
-[![Build Status](https://github.com/m-groom/EntropicLearning.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/m-groom/EntropicLearning.jl/actions/workflows/CI.yml?query=branch%3Amain)
-
-**EntropicLearning.jl** is an umbrella package providing a unified interface to the EntropicLearning ecosystem for machine learning in Julia.
+**EntropicLearning.jl** is an umbrella package providing a unified interface to the Entropic Learning ecosystem for machine learning in Julia.
 
 ## Overview
 
@@ -46,57 +44,16 @@ fit!(mach)
 ŷ = predict(mach, X)
 ```
 
-### Using EOS Wrapper
-
-The EOS (Entropic Outlier Sparsification) wrapper can be applied to any MLJ-compatible classifier to improve robustness to outliers:
+The EOS (Entropic Outlier Sparsification) wrapper can be applied to any MLJ-compatible model that accepts observation weights to improve robustness to outliers:
 
 ```julia
-using EntropicLearning
-using MLJBase
-
-# Wrap any classifier with EOS
+# Wrap a model with EOS
 base_model = eSPAClassifier()
 eos_model = EOSWrapper(model=base_model)
 
 mach = machine(eos_model, X, y)
 fit!(mach)
 ```
-
-## Organisation
-
-```
-EntropicLearning.jl (umbrella package)
-├── EntropicLearningBase.jl   # Core utilities and solvers
-├── eSPA.jl                   # eSPA classifier
-└── EOS.jl                    # EOS wrapper
-```
-
-## Exported Functions
-
-### From EntropicLearningBase
-
-**Core Functions:**
-- `safelog`, `entropy`, `cross_entropy`
-- `assign_closest!`, `left_stochastic!`, `normalise!`, `softmax!`
-- `effective_dimension`, `get_rng`, `get_promoted_eltype`
-
-**Mutual Information:**
-- `compute_mi_cd`, `mi_continuous_discrete`, `get_eff`, `get_eps`
-
-**Solvers:**
-- `configure_hsl_ipopt_options`, `vec2mat!`, `mat2vec!`, `setup_ipopt_problem`, `interpret_ipopt_status`
-- `spgqp!`, `spgqp`
-
-**EOS Utilities:**
-- `eos_distances`, `eos_loss`, `calc_eos_weights`, `eos_outlier_scores`
-
-### From eSPA
-
-- `eSPAClassifier` - entropy-optimal Sparse Probabilistic Approximation classifier
-
-### From EOS
-
-- `EOSWrapper` - Entropic Outlier Sparsification wrapper for classifiers
 
 ## License
 

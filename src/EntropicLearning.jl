@@ -17,7 +17,7 @@ using EntropicLearning
 model = eSPAClassifier()
 
 # Access EOS wrapper
-eos_model = EOSWrapper(model=some_classifier)
+eos_model = EOSWrapper(model=model)
 
 # Base utilities are also available
 x = safelog(0.5)
