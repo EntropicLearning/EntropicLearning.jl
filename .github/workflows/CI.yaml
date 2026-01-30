@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    tags: ['*']
+  pull_request:
+
+concurrency:
+  # Skip intermediate builds: always.
+  # Cancel intermediate builds: only if it is a pull request build.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+
+jobs:
+  test:
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - '1.9'
+          - '1.10'
+          - '1.11'
+        os:
+          - ubuntu-latest
+        arch:
+          - x64
+          
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: julia-actions/setup-julia@v1
+        with:
+          version: ${{ matrix.version }}
+          arch: ${{ matrix.arch }}
+      
+      # Configure Julia to use the PAT for accessing private repos
+      - name: Setup private package access
+        env:
+          GITHUB_TOKEN: ${{ secrets.PRIVATE_DEPS_TOKEN }}
+        run: |
+          # Configure git globally to use the token
+          git config --global url."https://${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
+          
+          # Set Julia environment variable for LibGit2
+          export JULIA_PKG_USE_CLI_GIT=true
+          
+          # Add the private packages using the authenticated URL
+          julia --project=@. -e '
+            using Pkg
+            ENV["JULIA_PKG_USE_CLI_GIT"] = "true"
+            Pkg.Registry.add(RegistrySpec(url="https://github.com/JuliaRegistries/General.git"))
+            # Add all private packages from GitHub with authentication
+            Pkg.add(url="https://$(ENV["GITHUB_TOKEN"])@github.com/m-groom/EntropicLearningBase.jl.git")
+            Pkg.add(url="https://$(ENV["GITHUB_TOKEN"])@github.com/m-groom/eSPA.jl.git")
+            Pkg.add(url="https://$(ENV["GITHUB_TOKEN"])@github.com/m-groom/EOS.jl.git")
+            Pkg.instantiate()
+          '
+          
+      - uses: julia-actions/cache@v1
+      - uses: julia-actions/julia-buildpkg@v1
+      - uses: julia-actions/julia-runtest@v1

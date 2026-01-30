@@ -1,0 +1,26 @@
+name = "EntropicLearning"
+uuid = "58f5f943-6c44-47b7-9329-c8d5645d225d"
+authors = ["Michael <michael.groom@sydney.edu.au>"]
+version = "0.1.0"
+
+[deps]
+EntropicLearningBase = "c7a3398d-1ab8-41f5-a1b6-31e59e2c7141"
+EOS = "bf58d025-0a7a-4da9-992f-a71647242797"
+eSPA = "a55ec5b5-84fd-4373-83d2-8f61cb7723b0"
+
+[compat]
+Aqua = "0.8"
+EntropicLearningBase = "0.1"
+EOS = "0.1"
+eSPA = "0.1"
+MLJBase = "1.7"
+Test = "1.9, 1.10, 1.11"
+julia = "1.9"
+
+[extras]
+Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
+MLJBase = "a7f614a8-145f-11e9-1d2a-a57a1082229d"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Aqua", "Test", "MLJBase"]
