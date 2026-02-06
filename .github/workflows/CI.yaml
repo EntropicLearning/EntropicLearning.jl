@@ -42,9 +42,9 @@ jobs:
         run: |
           julia --project=@. -e '
             using Pkg
-            Pkg.add(url="https://github.com/EntropicLearning/EntropicLearningBase.jl.git")
-            Pkg.add(url="https://github.com/EntropicLearning/eSPA.jl.git")
-            Pkg.add(url="https://github.com/EntropicLearning/EOS.jl.git")
+            Pkg.develop(url="https://github.com/EntropicLearning/EntropicLearningBase.jl.git")
+            Pkg.develop(url="https://github.com/EntropicLearning/eSPA.jl.git")
+            Pkg.develop(url="https://github.com/EntropicLearning/EOS.jl.git")
           '
           
       - uses: julia-actions/cache@v1
