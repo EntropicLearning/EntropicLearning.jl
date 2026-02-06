@@ -2,7 +2,7 @@
 
 [![Code Style: Blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/JuliaDiff/BlueStyle)
 [![Aqua QA](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl)
-[![CI](https://github.com/m-groom/EntropicLearning.jl/actions/workflows/CI.yaml/badge.svg)](https://github.com/m-groom/EntropicLearning.jl/actions/workflows/CI.yaml)
+[![CI](https://github.com/EntropicLearning/EntropicLearning.jl/actions/workflows/CI.yaml/badge.svg)](https://github.com/EntropicLearning/EntropicLearning.jl/actions/workflows/CI.yaml)
 [![Julia](https://img.shields.io/badge/julia-1.9%20%7C%201.10%20%7C%201.11-9558B2.svg)](https://julialang.org)
 
 **EntropicLearning.jl** is an umbrella package providing a unified interface to the Entropic Learning ecosystem for machine learning in Julia.
