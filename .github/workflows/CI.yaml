@@ -29,24 +29,33 @@ jobs:
           - ubuntu-latest
         arch:
           - x64
-          
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: julia-actions/setup-julia@v1
         with:
           version: ${{ matrix.version }}
           arch: ${{ matrix.arch }}
-      
+
       - name: Add unregistered public packages
         run: |
           julia --project=@. -e '
             using Pkg
-            Pkg.develop(url="https://github.com/EntropicLearning/EntropicLearningBase.jl.git")
-            Pkg.develop(url="https://github.com/EntropicLearning/eSPA.jl.git")
-            Pkg.develop(url="https://github.com/EntropicLearning/EOS.jl.git")
+            Pkg.develop([
+              PackageSpec(url="https://github.com/EntropicLearning/EntropicLearningBase.jl.git"),
+              PackageSpec(url="https://github.com/EntropicLearning/EOS.jl.git"),
+              PackageSpec(url="https://github.com/EntropicLearning/eSPA.jl.git"),
+            ])
+            Pkg.instantiate()
           '
-          
+
       - uses: julia-actions/cache@v1
+
       - uses: julia-actions/julia-buildpkg@v1
+        with:
+          project: '@.'
+
       - uses: julia-actions/julia-runtest@v1
+        with:
+          project: '@.'
