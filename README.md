@@ -21,13 +21,6 @@ This package re-exports functionality from the following component packages:
 
 ```julia
 using Pkg
-Pkg.add("EntropicLearning")
-```
-
-Or for development:
-
-```julia
-using Pkg
 Pkg.develop(path="/path/to/EntropicLearning.jl")
 ```
 
