@@ -38,27 +38,13 @@ jobs:
           version: ${{ matrix.version }}
           arch: ${{ matrix.arch }}
       
-      # Configure Julia to use the PAT for accessing private repos
-      - name: Setup private package access
-        env:
-          GITHUB_TOKEN: ${{ secrets.PRIVATE_DEPS_TOKEN }}
+      - name: Add unregistered public packages
         run: |
-          # Configure git globally to use the token
-          git config --global url."https://${GITHUB_TOKEN}@github.com/".insteadOf "https://github.com/"
-          
-          # Set Julia environment variable for LibGit2
-          export JULIA_PKG_USE_CLI_GIT=true
-          
-          # Add the private packages using the authenticated URL
           julia --project=@. -e '
             using Pkg
-            ENV["JULIA_PKG_USE_CLI_GIT"] = "true"
-            Pkg.Registry.add(RegistrySpec(url="https://github.com/JuliaRegistries/General.git"))
-            # Add all private packages from GitHub with authentication
-            Pkg.add(url="https://$(ENV["GITHUB_TOKEN"])@github.com/m-groom/EntropicLearningBase.jl.git")
-            Pkg.add(url="https://$(ENV["GITHUB_TOKEN"])@github.com/m-groom/eSPA.jl.git")
-            Pkg.add(url="https://$(ENV["GITHUB_TOKEN"])@github.com/m-groom/EOS.jl.git")
-            Pkg.instantiate()
+            Pkg.add(url="https://github.com/EntropicLearning/EntropicLearningBase.jl.git")
+            Pkg.add(url="https://github.com/EntropicLearning/eSPA.jl.git")
+            Pkg.add(url="https://github.com/EntropicLearning/EOS.jl.git")
           '
           
       - uses: julia-actions/cache@v1
