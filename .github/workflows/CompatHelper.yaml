@@ -15,25 +15,28 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+
       - name: Setup Julia
         uses: julia-actions/setup-julia@v1
         with:
           version: '1.9'
-      
+
       - name: Add unregistered public packages
         run: |
           julia --project=@. -e '
             using Pkg
-            Pkg.add(url="https://github.com/EntropicLearning/EntropicLearningBase.jl.git")
-            Pkg.add(url="https://github.com/EntropicLearning/eSPA.jl.git")
-            Pkg.add(url="https://github.com/EntropicLearning/EOS.jl.git")
+            Pkg.develop([
+              PackageSpec(url="https://github.com/EntropicLearning/EntropicLearningBase.jl.git"),
+              PackageSpec(url="https://github.com/EntropicLearning/EOS.jl.git"),
+              PackageSpec(url="https://github.com/EntropicLearning/eSPA.jl.git"),
+            ])
+            Pkg.instantiate()
           '
-          
+
       - name: Install CompatHelper
         run: julia -e 'using Pkg; Pkg.add("CompatHelper")'
-        
+
       - name: Run CompatHelper
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: julia -e 'using CompatHelper; CompatHelper.main()'
+        run: julia --project=@. -e 'using CompatHelper; CompatHelper.main()'
